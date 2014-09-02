@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnAll").click(function () {
+                $.getJSON("/api/MyApi", function (data) {
+                    var html = "<ul>";
+                    $(data).each(function (i, item) {
+                        html += "<li>"+item.ID+":"+item.Name+":"+item.Sex+"</li>";
+                    });
+                    html += "</ul>";
+                    $("#contactAll").html(html);
+                });
+            });
+
+
+            $("#btnID").click(function () {
+
+                $.post("/api/MyApi/GetListAll", function () { alert(11) });
+                var id = $("#txtID").val();
+                $.getJSON("/api/MyApi/" + id, function (data) {
+                    var html = "<ul>";
+                    $(data).each(function (i, item) {
+                        html += "<li>" + item.ID + ":" + item.Name + ":" + item.Sex + "</li>";
+                    });
+                    html += "</ul>";
+                    $("#contactID").html(html);
+                });
+            });
+
+            $("#btnSex").click(function () {
+                var sex = $("#ddlSex").val();
+                alert(sex);
+                $.getJSON("/api/MyApi?sex=" + sex, function (data) {
+                    var html = "<ul>";
+                    $(data).each(function (i, item) {
+                        html += "<li>" + item.ID + ":" + item.Name + ":" + item.Sex + "</li>";
+                    });
+                    html += "</ul>";
+                    $("#contactSex").html(html);
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <p>
+        <input type="button" id="btnAll" value="查询所有" />&nbsp;
+    </p>
+    <p>
+        <input type="text" id="txtID" name="txtID" />
+        <input type="button" id="btnID" value="根据ID查询" />&nbsp;
+    </p>
+    <p>
+        <select id="ddlSex" name="ddlSex">
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select>
+        <input type="button" id="btnSex" value="根据性别查询" />&nbsp;
+    </p>
+    <div id="contactAll">
+    </div>
+    <div id="contactID">
+    </div>
+    <div id="contactSex">
+    </div>
+
+</body>
+</html>
